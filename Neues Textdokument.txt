@@ -1,0 +1,23 @@
+# === Build-Stage ===
+FROM mcr.microsoft.com/dotnet/sdk:9.0-preview AS build
+WORKDIR /src
+
+# Projektdateien kopieren und Abhängigkeiten wiederherstellen
+COPY ["MyApp/MyApp.csproj", "MyApp/"]
+RUN dotnet restore "MyApp/MyApp.csproj"
+
+# Restlichen Code kopieren und veröffentlichen
+COPY . .
+WORKDIR "/src/MyApp"
+RUN dotnet publish "MyApp.csproj" -c Release -o /app/publish
+
+# === Runtime-Stage ===
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-preview AS final
+WORKDIR /app
+COPY --from=build /app/publish .
+
+# Render verwendet die Umgebungsvariable $PORT
+ENV ASPNETCORE_URLS=http://+:$PORT
+EXPOSE 10000
+
+ENTRYPOINT ["dotnet", "MyApp.dll"]
