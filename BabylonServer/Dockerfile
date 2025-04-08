@@ -12,20 +12,20 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["BabylonServer/BabylonServer/BabylonServer.csproj", "BabylonServer/BabylonServer/"]
-COPY ["BabylonServer/BabylonServer.Client/BabylonServer.Client.csproj", "BabylonServer/BabylonServer.Client/"]
-RUN dotnet restore "./BabylonServer/BabylonServer/BabylonServer.csproj"
+COPY ["APIBackeEnd/APIBackeEnd/APIBackeEnd.csproj", "APIBackeEnd/APIBackeEnd/"]
+COPY ["APIBackeEnd/APIBackeEnd.Client/APIBackeEnd.Client.csproj", "APIBackeEnd/APIBackeEnd.Client/"]
+RUN dotnet restore "./APIBackeEnd/APIBackeEnd/APIBackeEnd.csproj"
 COPY . .
-WORKDIR "/src/BabylonServer/BabylonServer"
-RUN dotnet build "./BabylonServer.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/APIBackeEnd/APIBackeEnd"
+RUN dotnet build "./APIBackeEnd.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Diese Stufe wird verwendet, um das Dienstprojekt zu veröffentlichen, das in die letzte Phase kopiert werden soll.
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./BabylonServer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./APIBackeEnd.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Diese Stufe wird in der Produktion oder bei Ausführung von VS im regulären Modus verwendet (Standard, wenn die Debugkonfiguration nicht verwendet wird).
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "BabylonServer.dll"]
+ENTRYPOINT ["dotnet", "APIBackeEnd.dll"]
