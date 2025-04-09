@@ -5,8 +5,8 @@ class Program
 {
     static void Main()
     {
-        var connectionString = "Host=db.hwnllbmmkraninmpxjbv.supabase.co;Port=5432;Database=postgres;Username=postgres;Password=Test123§\"!#TEst!";
-        var connectionString2 = "postgresql://postgres:Test123§\"!#TEst!@db.hwnllbmmkraninmpxjbv.supabase.co:5432/postgres";
+        var connectionString = "Host=db.hwnllbmmkraninmpxjbv.supabase.co;Port=5432;Database=postgres;Username=postgres;Password=MySecurePass123!";
+        var connectionString2 = "Host=db.hwnllbmmkraninmpxjbv.supabase.co;Port=5432;Database=postgres;Username=postgres;Password=MySecurePass123!";
 
         try
         {
