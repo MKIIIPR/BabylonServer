@@ -6,10 +6,11 @@ class Program
     static void Main()
     {
         var connectionString = "Host=db.hwnllbmmkraninmpxjbv.supabase.co;Port=5432;Database=postgres;Username=postgres;Password=Test123§\"!#TEst!";
+        var connectionString2 = "postgresql://postgres:Test123§\"!#TEst!@db.hwnllbmmkraninmpxjbv.supabase.co:5432/postgres";
 
         try
         {
-            using var connection = new NpgsqlConnection(connectionString);
+            using var connection = new NpgsqlConnection(connectionString2);
             connection.Open();
             Console.WriteLine("✅ Verbindung erfolgreich!");
 

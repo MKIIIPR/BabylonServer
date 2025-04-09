@@ -5,9 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-APIBackeEnd-da644268-25bc-4317-b5fb-27f74ffe2590</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
-  </PropertyGroup>
+      </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\APIBackeEnd.Client\APIBackeEnd.Client.csproj" />
