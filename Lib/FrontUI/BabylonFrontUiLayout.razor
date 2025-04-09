@@ -1,0 +1,51 @@
+﻿
+@using FrontUI.AppStates
+
+@inherits LayoutComponentBase
+
+<MudThemeProvider IsDarkMode="true" Theme="_myDarkTheme" />
+
+<MudPopoverProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar>
+       
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle" />
+        <MudImage Src="_content/FrontUI/img/beeetv.png" Width="55" Height="55" Alt="Mony the dog" Elevation="25" Class="rounded-lg" Style="border-radius:30px!important" />
+        BabylonMap
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="@_drawerOpen">
+        <MudNavMenu />
+    </MudDrawer>
+
+    <MudMainContent>
+
+            @ChildContent
+    </MudMainContent>
+       <div style="background-color:red;height:25px;width:100%">
+
+       </div>
+</MudLayout>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    private bool _drawerOpen = false;
+
+    private void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    private MudTheme _myDarkTheme = new MudTheme()
+        {
+             PaletteDark = new PaletteDark()
+            {
+                Primary = "#1E88E5",
+                Secondary = "#E91E63",
+                Background = "#121212",
+                Surface = "#1E1E1E"
+            }
+        };
+}

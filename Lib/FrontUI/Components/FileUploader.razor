@@ -1,0 +1,125 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+@implements IAsyncDisposable
+
+
+<div @ref="fileDropContainer" class="file-drop-zone @HoverClass"
+@ondragenter="OnDragEnter"
+@ondragleave="OnDragLeave" @ondragover="OnDragEnter">
+    <!-- Benutzerdefiniertes Label -->
+    <label for="inputFile" class="custom-file-label">
+        klick or drag for upload
+    </label>
+
+    <!-- Das eigentliche InputFile wird versteckt -->
+    <InputFile id="inputFile" style="display: none;" @ref="inputFile" multiple OnChange="@OnChange" />
+</div>
+<MudButton OnClick="PasteImageFromClipboard">📋</MudButton>
+
+
+@code {
+    private string ImgString { get; set; }
+    [Parameter] public EventCallback<string> OnImageUploaded { get; set; } // Übergabe des Bildes an das Parent
+    private const int maxAllowedSize = 8 * 1024 * 1024; // 8 MB
+    private List<string> imageSources = new List<string>();
+    private string HoverClass = string.Empty;
+    private ElementReference fileDropContainer;
+    InputFile? inputFile;
+    IJSObjectReference? _clipboardModule;
+
+    void OnDragEnter(DragEventArgs e) => HoverClass = "hover";
+    void OnDragLeave(DragEventArgs e) => HoverClass = string.Empty;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+           
+        }
+    }
+
+    async Task OnChange(InputFileChangeEventArgs e)
+    {
+        foreach (var file in e.GetMultipleFiles())
+        {
+            try
+            {
+                using var stream = file.OpenReadStream(maxAllowedSize);
+                using var ms = new MemoryStream();
+                await stream.CopyToAsync(ms);
+                var base64Image = $"data:{file.ContentType};base64,{Convert.ToBase64String(ms.ToArray())}";
+                imageSources.Add(base64Image);
+
+                // Bild an das Parent weitergeben
+                await OnImageUploaded.InvokeAsync(base64Image);
+                Console.WriteLine("✅ Bild erfolgreich hochgeladen.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Fehler beim Hochladen des Bildes: {ex.Message}");
+            }
+        }
+    }
+
+    private async Task PasteImageFromClipboard()
+    {
+        try
+        {
+            Console.WriteLine("📋 Versuche, Bild aus der Zwischenablage einzufügen...");
+            await JS.InvokeVoidAsync("getClipboardImage", DotNetObjectReference.Create(this));
+
+        }
+        catch (Exception ex)
+        {
+            // Detaillierte Fehlermeldung inklusive innerer Ausnahmen und StackTrace
+            var errorDetails = $"❌ Fehler beim Einfügen des Bildes aus der Zwischenablage: {ex.Message}\n" +
+                               $"StackTrace: {ex.StackTrace}";
+
+            if (ex.InnerException != null)
+            {
+                errorDetails += $"\nInner Exception: {ex.InnerException.Message}\n{ex.InnerException.StackTrace}";
+            }
+
+            Console.WriteLine(errorDetails);
+        }
+    }
+
+    [JSInvokable]
+    public Task OnImagePasted(string base64Image)
+    {
+        try
+        {
+            var imageSrc = $"data:image/png;base64,{base64Image}";
+            imageSources.Add(imageSrc);
+
+            // Bild an das Parent weitergeben
+            OnImageUploaded.InvokeAsync(imageSrc);
+            StateHasChanged(); // UI aktualisieren
+            Console.WriteLine("✅ Bild aus Zwischenablage eingefügt!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Fehler beim Verarbeiten des eingefügten Bildes: {ex.Message}");
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_clipboardModule is not null)
+        {
+            try
+            {
+                await _clipboardModule.DisposeAsync();
+                Console.WriteLine("✅ Clipboard-Modul erfolgreich entladen.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Fehler beim Entladen des Clipboard-Moduls: {ex.Message}");
+            }
+        }
+    }
+}

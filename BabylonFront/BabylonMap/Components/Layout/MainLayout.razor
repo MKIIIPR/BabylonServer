@@ -1,0 +1,18 @@
+﻿
+
+@inherits LayoutComponentBase
+
+            <FrontUI.BabylonFrontUiLayout>
+                @Body
+            </FrontUI.BabylonFrontUiLayout>
+
+@code {
+    private bool _drawerOpen = false;
+
+    private void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    
+}
