@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
+  <PropertyGroup>
+    <!-- Diese Eigenschaft sollte ganz oben stehen, ohne Bedingung -->
+    <IgnoreRuntimeIdentifiersForReferencedProjects>true</IgnoreRuntimeIdentifiersForReferencedProjects>
+  </PropertyGroup>
     <PropertyGroup>
         <TargetFrameworks>net9.0-maccatalyst</TargetFrameworks>
         <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
@@ -20,7 +24,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <EnableDefaultCssItems>false</EnableDefaultCssItems>
         <Nullable>enable</Nullable>
-
+        
         <!-- Display name -->
         <ApplicationTitle>BabylonMap</ApplicationTitle>
 

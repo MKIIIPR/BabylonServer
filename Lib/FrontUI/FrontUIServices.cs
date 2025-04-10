@@ -5,7 +5,7 @@ using FrontUI.Helper.MapHelper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
-
+using Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace FrontUI
         {
             //services.AddMudBlazorSnackbar();
             //services.AddMudBlazorDialog();
-
+            services.ADDBabylonServices();
             services.AddMudServices();
             services.AddScoped<MapHandler>();
             services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://your-api-url.com") });
