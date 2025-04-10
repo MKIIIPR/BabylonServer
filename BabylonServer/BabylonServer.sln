@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "..\Lib\Services
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Factory", "..\Lib\Factory\Factory.csproj", "{906B8D25-7BA9-8142-3E42-A85D6EAF33CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BabylonMap", "..\BabylonFront\BabylonMap\BabylonMap.csproj", "{164A8437-FF83-F44D-5959-45EABCB8E6EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{906B8D25-7BA9-8142-3E42-A85D6EAF33CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{906B8D25-7BA9-8142-3E42-A85D6EAF33CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{906B8D25-7BA9-8142-3E42-A85D6EAF33CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{164A8437-FF83-F44D-5959-45EABCB8E6EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{164A8437-FF83-F44D-5959-45EABCB8E6EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{164A8437-FF83-F44D-5959-45EABCB8E6EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{164A8437-FF83-F44D-5959-45EABCB8E6EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
