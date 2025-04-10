@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Lib\AshesMapBib\AshesMapBib.csproj" />
     <ProjectReference Include="..\Factory\Factory.csproj" />
   </ItemGroup>
 

@@ -1,15 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-APIBackeEnd-da644268-25bc-4317-b5fb-27f74ffe2590</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
       </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Lib\FrontUI\FrontUI.csproj" />
-    <ProjectReference Include="..\..\..\Lib\Services\Services.csproj" />
+    <ProjectReference Include="..\..\FrontUI\FrontUI.csproj" />
+    <ProjectReference Include="..\..\Services\Services.csproj" />
     <ProjectReference Include="..\APIBackeEnd.Client\APIBackeEnd.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.3" />

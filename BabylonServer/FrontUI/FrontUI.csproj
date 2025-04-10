@@ -64,7 +64,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AshesMapBib\AshesMapBib.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 

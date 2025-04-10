@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Lib\AshesMapBib\AshesMapBib.csproj" />
+    <ProjectReference Include="..\AshesMapBib\AshesMapBib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

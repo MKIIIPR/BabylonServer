@@ -82,8 +82,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Lib\AshesMapBib\AshesMapBib.csproj" />
-      <ProjectReference Include="..\..\Lib\FrontUI\FrontUI.csproj" />
+      <ProjectReference Include="..\..\FrontUI\FrontUI.csproj" />
     </ItemGroup>
 
 </Project>
