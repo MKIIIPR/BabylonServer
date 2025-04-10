@@ -7,7 +7,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.AccountServices
+namespace Services.AccountServices.ClientServices.Api
 
 {
     public class ClientService : IClientService

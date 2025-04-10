@@ -1,0 +1,80 @@
+﻿@using Blazored.LocalStorage
+@using FrontPWA.Shared.AppState.VarState
+@using FrontUI.States
+@using Newtonsoft.Json
+@using Services.AccountServices.ClientServices.Models
+@inject ILocalStorageService LocalStorageService
+@inject ILoggedInAccount _userClient 
+
+@if (hasLoaded)
+{
+    <CascadingValue Value="@this">
+        @ChildContent
+    </CascadingValue>
+}
+
+@code
+{
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public AppState AppState { get; set; }
+    public MapState MapState { get; set; }
+   
+
+
+    bool hasLoaded;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var json = await LocalStorageService.GetItemAsStringAsync("AppStateJson");
+        var jsonUser = await LocalStorageService.GetItemAsStringAsync("AppUserState");
+        var jsonServer = await LocalStorageService.GetItemAsStringAsync("AppServerState");
+        //Appdata injection
+        #region App
+        if (json != null && json != "")
+        {
+            var Data = JsonConvert.DeserializeObject<AppState>(json);
+            if (DateTime.Now >= Data.LastAccessed.AddSeconds(Data.TimeToLiveInSeconds))
+            {
+                AppState = Data;
+            }
+            else
+            {
+                AppState = new AppState();
+
+            }
+        }
+        else
+        {
+            AppState = new AppState();
+        }
+        #endregion
+        //Userdata injection
+      
+        hasLoaded = true;
+
+    }
+
+    public void SaveChanges()
+    {
+        SaveChangesAsync().GetAwaiter().GetResult();
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        // LocalStorage allows up to 5MB by default.
+        // Test: https://arty.name/localstorage.html
+        // TIP: Never store sensitive data in LocalStorage
+
+        AppState.LastAccessed = DateTime.UtcNow;
+        var appjson = JsonConvert.SerializeObject(AppState);
+        await LocalStorageService.SetItemAsStringAsync("AppStateJson", appjson);
+
+
+        var serverjson = JsonConvert.SerializeObject(MapState);
+        await LocalStorageService.SetItemAsStringAsync("ServerStateJson", serverjson);
+
+    }
+
+}

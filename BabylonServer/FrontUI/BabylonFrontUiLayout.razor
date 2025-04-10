@@ -1,5 +1,6 @@
 ﻿
 @using FrontUI.AppStates
+@using Microsoft.AspNetCore.Components.Authorization
 @using MudBlazor
 
 @inherits LayoutComponentBase
@@ -8,7 +9,8 @@
 
 <MudPopoverProvider />
 <MudSnackbarProvider />
-
+<CascadingAuthenticationState>
+<CascadingAppStateProvider>
 <MudLayout>
     <MudAppBar>
        
@@ -29,7 +31,8 @@
 
        </div>
 </MudLayout>
-
+</CascadingAppStateProvider>
+</CascadingAuthenticationState>
 @code {
     [Parameter] public RenderFragment ChildContent { get; set; }
     private bool _drawerOpen = false;

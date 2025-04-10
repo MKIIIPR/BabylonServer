@@ -2,7 +2,7 @@
 
 using AshesMapBib.Models.AccountModels;
 
-namespace Services.AccountServices
+namespace Services.AccountServices.ClientServices.Api
 {
     public interface IClientService
     {

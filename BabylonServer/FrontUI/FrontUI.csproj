@@ -54,8 +54,12 @@
     <PackageReference Include="MudBlazor" Version="8.3.0" />
     <PackageReference Include="MudBlazor.ThemeManager" Version="3.0.0" />
   </ItemGroup>
-
   <ItemGroup>
+    <EmbeddedResource Include="dev_appsettings.json" />
+    <EmbeddedResource Include="pro_appsettings.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="FrontPages\AuthPages\" />
     <Folder Include="wwwroot\css\NewFolder\" />
   </ItemGroup>
 
