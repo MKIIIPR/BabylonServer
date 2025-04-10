@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Lib\FrontUI\FrontUI.csproj" />
-    <ProjectReference Include="..\..\Factory\Factory.csproj" />
+    <ProjectReference Include="..\..\..\Lib\Services\Services.csproj" />
     <ProjectReference Include="..\APIBackeEnd.Client\APIBackeEnd.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.3" />
