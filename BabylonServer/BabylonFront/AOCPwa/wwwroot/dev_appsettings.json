@@ -1,0 +1,5 @@
+﻿{
+  "api": "https://localhost:7294",
+  "tokenEndpoint": "/token",
+  "authTokenStorageKey": "authToken"
+}

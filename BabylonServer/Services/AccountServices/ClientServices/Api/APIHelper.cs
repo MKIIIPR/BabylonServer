@@ -36,7 +36,7 @@ namespace Services.AccountServices.ClientServices.Api
 
         private void InitializeClient()
         {
-            string api = _config.GetValue<string>("api");
+            string api = _config["api"];
 
             _apiClient = new HttpClient();
             _apiClient.BaseAddress = new Uri(api);

@@ -8,16 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Lib\AshesMapBib\AshesMapBib.csproj" />
     <ProjectReference Include="..\AshesMapBib\AshesMapBib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0" />
     <PackageReference Include="Hashids.net" Version="1.7.0" />
   </ItemGroup>
 

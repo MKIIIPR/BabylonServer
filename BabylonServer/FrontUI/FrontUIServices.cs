@@ -5,9 +5,11 @@ using FrontUI.AuthenticationServices;
 using FrontUI.FtpService;
 using FrontUI.Helper.MapHelper;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
+using Newtonsoft.Json;
 using PWAPortal.Authentication;
 using Services;
 using Services.AccountServices.ClientServices.Api;
@@ -16,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,40 +28,40 @@ namespace FrontUI
     {
         public static void ADDFrontUIServices(this IServiceCollection services)
         {
+            // Umgebung bestimmen (hier auch anpassbar)
+        
+            // Weitere Services
             services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();            
+            services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
             services.AddSingleton<IAPIHelper, APIHelper>();
             services.AddSingleton<ILoggedInAccount, LoggedInAccount>();
-            
+
             services.AddTransient<IUserEndpoint, UserEndpoint>();
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IProfileEndpoint, ProfileEndpoint>();
             services.AddSingleton<CascadingAppStateProvider>();
             services.AddBlazoredLocalStorage();
-            //services.AddMudBlazorSnackbar();
-            //services.AddMudBlazorDialog();
-            services.ADDBabylonServices();
             services.AddMudServices();
             services.AddScoped<MapHandler>();
             services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://your-api-url.com") });
-            services.AddScoped<FTPConnection>();   
+            services.AddScoped<FTPConnection>();
 
+            // API Clients
             services.AddScoped<ResourceApiClient<Node>>(sp =>
-        new ResourceApiClient<Node>(
-            sp.GetRequiredService<HttpClient>(),
-            sp.GetRequiredService<ILogger<ResourceApiClient<Node>>>() // Logger hinzufügen
-        )
-    );
+                new ResourceApiClient<Node>(
+                    sp.GetRequiredService<HttpClient>(),
+                    sp.GetRequiredService<ILogger<ResourceApiClient<Node>>>()
+                )
+            );
 
             services.AddScoped<ResourceApiClient<NodePosition>>(sp =>
                 new ResourceApiClient<NodePosition>(
                     sp.GetRequiredService<HttpClient>(),
-                    sp.GetRequiredService<ILogger<ResourceApiClient<NodePosition>>>() // Logger hinzufügen
+                    sp.GetRequiredService<ILogger<ResourceApiClient<NodePosition>>>()
                 )
             );
-
-
         }
     }
+
 
 }

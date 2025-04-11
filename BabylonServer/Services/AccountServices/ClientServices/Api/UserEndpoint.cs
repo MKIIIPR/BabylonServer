@@ -1,5 +1,5 @@
-﻿using Services.AccountServices.ClientServices.Api;
-using Services.AccountServices.ClientServices.Models;
+﻿using AshesMapBib.Models.AccountModels.ClientModel;
+using Services.AccountServices.ClientServices.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;

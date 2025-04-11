@@ -14,9 +14,9 @@ public static class MauiProgram
 
         // 💡 Umgebung bestimmen
         string environment = "Production"; // Standardmäßig auf Production setzen
-#if DEBUG
-        environment = "Development"; // In Debug-Mode auf Development setzen
-#endif
+        #if DEBUG
+                environment = "Development"; // In Debug-Mode auf Development setzen
+        #endif
 
         // 📄 Embedded JSON-Datei wählen
         var assembly = Assembly.Load("FrontUI");  // Verwendet die Assembly von MauiProgram, oder jede andere Klasse in deinem Maui-Projekt

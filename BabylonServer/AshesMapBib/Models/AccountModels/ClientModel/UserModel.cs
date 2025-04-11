@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.AccountServices.ClientServices.Models
+namespace AshesMapBib.Models.AccountModels.ClientModel
 {
     public class UserModel
     {

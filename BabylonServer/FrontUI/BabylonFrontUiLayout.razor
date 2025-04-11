@@ -1,6 +1,7 @@
 ﻿
 @using FrontUI.AppStates
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Routing
 @using MudBlazor
 
 @inherits LayoutComponentBase
@@ -16,7 +17,7 @@
        
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle" />
         <MudImage Src="_content/FrontUI/img/beeetv.png" Width="55" Height="55" Alt="Mony the dog" Elevation="25" Class="rounded-lg" Style="border-radius:30px!important" />
-        BabylonMap
+        BabylonMap <NavLink class="nav-link" href="/register">Password</NavLink>
     </MudAppBar>
 
     <MudDrawer @bind-Open="@_drawerOpen">

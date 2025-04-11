@@ -4,32 +4,25 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Blazor WebAssembly -->
     <WasmNativBuild>true</WasmNativBuild>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\map\**" />
-    <Compile Remove="wwwroot\NewFolder\**" />
-    <Content Remove="wwwroot\map\**" />
-    <Content Remove="wwwroot\NewFolder\**" />
-    <EmbeddedResource Remove="wwwroot\map\**" />
-    <EmbeddedResource Remove="wwwroot\NewFolder\**" />
-    <None Remove="wwwroot\map\**" />
-    <None Remove="wwwroot\NewFolder\**" />
+    <EmbeddedResource Include="wwwroot\dev_appsettings.json" />
+    <EmbeddedResource Include="wwwroot\prod_appsettings.json" />
   </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.3.0" />
-    <PackageReference Include="MudBlazor" Version="8.3.0" />
-    <PackageReference Include="MudBlazor.ThemeManager" Version="3.0.0" />
-    
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Service Worker (falls du diesen benötigst) -->
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
 
@@ -37,5 +30,18 @@
     <Folder Include="wwwroot\img\" />
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\FrontUI\FrontUI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <!-- Falls du FrontUI nicht benötigst, entferne diesen Verweis -->
+  <!-- <ProjectReference Include="..\..\FrontUI\FrontUI.csproj" /> -->
 
 </Project>

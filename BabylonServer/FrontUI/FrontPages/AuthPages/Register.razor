@@ -1,0 +1,103 @@
+﻿@page "/register"
+@using AshesMapBib.Models.AccountModels.ClientModel
+
+@using FrontUI.AppStates
+@using FrontUI.AuthenticationServices
+@using Microsoft.AspNetCore.Components.Forms
+@using PWAPortal.Authentication
+@using Portal.Models
+@using Services.AccountServices.ClientServices.Api
+@inject IUserEndpoint UserEndpoint
+@inject IAuthenticationService AuthService
+@inject NavigationManager NavManager
+@inject IClientService _clientService
+
+<h3>Create An Account</h3>
+
+@if (string.IsNullOrWhiteSpace(errorMessage) == false)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+
+<EditForm Model="@model" OnValidSubmit="@OnValidSubmit">
+
+
+    <div class="form-group row">
+        <label for="first-name" class="col-md-2 col-form-label">UserName: </label>
+        <div class="col-md-10">
+            <InputText id="user-name" class="form-control" @bind-Value="model.UserName" />
+
+        </div>
+    </div>
+
+
+
+
+    <div class="form-group row">
+        <label for="email" class="col-md-2 col-form-label">Email Address: </label>
+        <div class="col-md-10">
+            <InputText id="email" class="form-control" @bind-Value="model.EmailAddress" />
+
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="password" class="col-md-2 col-form-label">Password: </label>
+        <div class="col-md-10">
+            <InputText type="password" id="password" class="form-control" @bind-Value="model.Password" />
+
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="confirm-password" class="col-md-2 col-form-label">Confirm Password: </label>
+        <div class="col-md-10">
+            <InputText type="password" id="confirm-password" class="form-control" @bind-Value="model.ConfirmPassword" />
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Create Account</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    public CascadingAppStateProvider State { get; set; }
+    CreateUserModel model = new();
+    string errorMessage;
+
+    private async Task OnValidSubmit()
+    {
+        errorMessage = "";
+
+        try
+        {
+            await UserEndpoint.CreateUser(model);
+
+            AuthenticatedUserModel result = await AuthService.Login(new() {UserName=model.UserName, Email = model.EmailAddress, Password = model.Password });
+
+            if (result is not null)
+            {
+                 var x = await _clientService.ClientCall();
+                    // var savedMainProfile = x.Profiles.Where(e => e.IsMainProfile == true).FirstOrDefault();
+                    //     if(savedMainProfile !=null)
+                    // State.UserState.SetActiveProfile(this, savedMainProfile);
+                    // State.UserState.UpdateClient(this, x);
+                NavManager.NavigateTo("/");
+            }
+            else
+            {
+                errorMessage = "The registration worked but there was an error when trying to log in.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+}
