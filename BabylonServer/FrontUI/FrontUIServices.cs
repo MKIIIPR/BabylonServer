@@ -4,6 +4,7 @@ using FrontUI.AppStates;
 using FrontUI.AuthenticationServices;
 using FrontUI.FtpService;
 using FrontUI.Helper.MapHelper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ using MudBlazor.Services;
 using Newtonsoft.Json;
 using PWAPortal.Authentication;
 using Services;
+using Services.AccountServices;
 using Services.AccountServices.ClientServices.Api;
 using Services.AccountServices.ClientServices.Models;
 using System;
@@ -33,9 +35,11 @@ namespace FrontUI
             // Weitere Services
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
+            services.AddAuthorizationCore();
+
             services.AddSingleton<IAPIHelper, APIHelper>();
             services.AddSingleton<ILoggedInAccount, LoggedInAccount>();
-
+            services.AddSingleton<ILoggedInUserModel, LoggedInUserModel>();
             services.AddTransient<IUserEndpoint, UserEndpoint>();
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IProfileEndpoint, ProfileEndpoint>();

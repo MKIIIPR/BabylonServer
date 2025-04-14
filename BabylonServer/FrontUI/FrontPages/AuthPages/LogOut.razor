@@ -1,0 +1,12 @@
+﻿@page "/logout"
+@using FrontUI.AuthenticationServices
+@inject NavigationManager NavManager
+@inject IAuthenticationService AuthService
+
+@code {      
+    protected override async Task OnInitializedAsync()
+    {
+        await AuthService.Logout();
+        NavManager.NavigateTo("/");
+    }
+}

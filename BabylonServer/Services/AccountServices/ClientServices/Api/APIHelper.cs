@@ -1,27 +1,26 @@
 ﻿
-using Services.AccountServices.ClientServices.Models;
 using Microsoft.Extensions.Configuration;
+using Services.AccountServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
-using AshesMapBib.Models.AccountModels;
-
 
 namespace Services.AccountServices.ClientServices.Api
 {
     public class APIHelper : IAPIHelper
     {
         private HttpClient _apiClient;
-        private ILoggedInAccount _client;
+        private ILoggedInUserModel _loggedInUser;
         private readonly IConfiguration _config;
 
-        public APIHelper(ILoggedInAccount client, IConfiguration config)
+        public APIHelper(ILoggedInUserModel loggedInUser, IConfiguration config)
         {
-            _client = client;
+            _loggedInUser = loggedInUser;
             _config = config;
             InitializeClient();
         }
@@ -57,7 +56,7 @@ namespace Services.AccountServices.ClientServices.Api
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var result = await response.Content.ReadAsAsync<AuthenticatedUser>();
+                    var result = await response.Content.ReadFromJsonAsync<AuthenticatedUser>();
                     return result;
                 }
                 else
@@ -79,13 +78,17 @@ namespace Services.AccountServices.ClientServices.Api
             _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
 
-            using (HttpResponseMessage response = await _apiClient.GetAsync("/api/KrakenClient/Client"))
+            using (HttpResponseMessage response = await _apiClient.GetAsync("/api/User"))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var result = await response.Content.ReadAsAsync<KrakenClientView>();
-                    _client.SetClient(result);
-
+                    var result = await response.Content.ReadFromJsonAsync<LoggedInUserModel>();
+                    _loggedInUser.CreatedDate = result.CreatedDate;
+                    _loggedInUser.EmailAddress = result.EmailAddress;
+                    _loggedInUser.FirstName = result.FirstName;
+                    _loggedInUser.Id = result.Id;
+                    _loggedInUser.LastName = result.LastName;
+                    _loggedInUser.Token = token;
                 }
                 else
                 {

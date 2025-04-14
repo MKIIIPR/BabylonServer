@@ -52,8 +52,8 @@ namespace PWAPortal.Authentication
 
            // _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
             _apiHelper.GetLoggedInUserInfo(token);
-            var x = await _clientService.ClientCall();
-           _userClient.SetClient(x);
+           // var x = await _clientService.ClientCall();
+           //_userClient.SetClient(x);
             //var savedMainProfile = x.Profiles.Where(e => e.IsMainProfile == true).FirstOrDefault();
             
             //    State.UserState.SetActiveProfile(this, savedMainProfile);

@@ -1,5 +1,6 @@
 ﻿
 using AshesMapBib.Models.AccountModels.ClientModel;
+using AshesMapBib.Models.Essential;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,6 +12,6 @@ namespace Services.AccountServices.ClientServices.Api
         Task<Dictionary<string, string>> GetAllRoles();
         Task AddUserToRole(string userId, string roleName);
         Task RemoveUserFromRole(string userId, string roleName);
-        Task CreateUser(CreateUserModel model);
+        Task<Response> CreateUser(CreateUserModel model);
     }
 }

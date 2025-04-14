@@ -20,7 +20,7 @@ namespace AshesMapBib.Models.AccountModels.ClientModel
         [Required]
         [EmailAddress]
         [DisplayName("Email Address")]
-        public string EmailAddress { get; set; }
+        public string Email { get; set; }
 
         [Required]
         public string Password { get; set; }

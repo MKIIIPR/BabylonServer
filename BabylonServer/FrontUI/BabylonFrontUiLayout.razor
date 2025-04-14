@@ -1,9 +1,12 @@
 ﻿
 @using FrontUI.AppStates
+@using FrontUI.FrontPages.Dialogs
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Routing
 @using MudBlazor
-
+@using static MudBlazor.CategoryTypes
+@inject IDialogService Dialog
+ @inject AuthenticationStateProvider AuthenticationStateProvider
 @inherits LayoutComponentBase
 
 <MudThemeProvider IsDarkMode="true" Theme="_myDarkTheme" />
@@ -11,33 +14,77 @@
 <MudPopoverProvider />
 <MudSnackbarProvider />
 <CascadingAuthenticationState>
-<CascadingAppStateProvider>
-<MudLayout>
-    <MudAppBar>
-       
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle" />
-        <MudImage Src="_content/FrontUI/img/beeetv.png" Width="55" Height="55" Alt="Mony the dog" Elevation="25" Class="rounded-lg" Style="border-radius:30px!important" />
-        BabylonMap <NavLink class="nav-link" href="/register">Password</NavLink>
-    </MudAppBar>
+    <CascadingAppStateProvider>
+        <MudLayout>
+            <MudAppBar>
 
-    <MudDrawer @bind-Open="@_drawerOpen">
-        <MudNavMenu />
-    </MudDrawer>
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle" ov />
+                <MudImage Src="_content/FrontUI/img/beeetv.png" Width="55" Height="55" Alt="Mony the dog" Elevation="25" Class="rounded-lg" Style="border-radius:30px!important" />
+                BabylonMap 
+                <MudSpacer  />
+                <AuthorizeView>
+                    <Authorized>
+                        @{
+                            var ds = "";
+                        }
+                        yes 
+                                
+                            </Authorized>
+                            <NotAuthorized>
+                        @{
+                            var ds = "";
+                        }
+                            </NotAuthorized>
+            </AuthorizeView>
+                <MudSpacer></MudSpacer>
+                <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Primary" aria-label="github" OnClick="RegisterInSideNav" />
+                <MudButton OnClick="@(() => OpenDialogAsync())" Color="Color.Tertiary">Disable backdrop dialog</MudButton>
+            </MudAppBar>
 
-    <MudMainContent>
+            <MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Never" Anchor="Anchor.End" Width="400px" Elevation="1" Variant="@DrawerVariant.Temporary">
+               <FrontUI.FrontPages.AuthPages.VerifyAuth/>
+            </MudDrawer>
 
-            @ChildContent
-    </MudMainContent>
-       <div style="background-color:red;height:25px;width:100%">
+            <MudMainContent>
 
-       </div>
-</MudLayout>
-</CascadingAppStateProvider>
+                @ChildContent
+            </MudMainContent>
+            <div style="background-color:red;height:25px;width:100%">
+
+            </div>
+        </MudLayout>
+    </CascadingAppStateProvider>
 </CascadingAuthenticationState>
 @code {
+    private Task OpenDialogAsync()
+    {
+        return Dialog.ShowAsync<DialogTemplate>("Custom Options Dialog", new DialogOptions() { BackdropClick = false });
+    }
+    @code {
+        public string User { get; set; } = string.Empty;
+        protected override async Task OnInitializedAsync()
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity != null && user.Identity.IsAuthenticated)
+            {
+                Console.WriteLine("Benutzer ist authentifiziert.");
+            }
+            else
+            {
+                Console.WriteLine("Benutzer ist nicht authentifiziert.");
+            }
+        }
+    }
     [Parameter] public RenderFragment ChildContent { get; set; }
     private bool _drawerOpen = false;
-
+    public string SideNavContent = "";
+    public void RegisterInSideNav()
+    {
+        SideNavContent = "Register";
+        DrawerToggle();
+    }
     private void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;

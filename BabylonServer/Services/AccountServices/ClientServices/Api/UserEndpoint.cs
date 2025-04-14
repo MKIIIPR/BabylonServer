@@ -1,10 +1,12 @@
 ﻿using AshesMapBib.Models.AccountModels.ClientModel;
+using AshesMapBib.Models.Essential;
 using Services.AccountServices.ClientServices.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Services.AccountServices.ClientServices.Api
@@ -34,19 +36,74 @@ namespace Services.AccountServices.ClientServices.Api
             }
         }
 
-        public async Task CreateUser(CreateUserModel model)
+        public async Task<Response> CreateUser(CreateUserModel model)
         {
-            RegisterModel data = new RegisterModel();
-            data.UserName = model.UserName;
-            data.Email = model.EmailAddress;
-            data.Password = model.Password;
+            RegisterModel data = new RegisterModel
+            {
+                UserName = model.UserName,
+                Email = model.Email,
+                Password = model.Password,
+                
+            };
 
-            HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("api/Authenticate/register", data);
-            if (response.IsSuccessStatusCode)
-                Console.WriteLine("Success");
-            else
-                Console.WriteLine(response.ReasonPhrase);
+            try
+            {
+                Console.WriteLine("Sende folgende Nutzerdaten:");
+                Console.WriteLine($"Username: {data.UserName}");
+                Console.WriteLine($"Email: {data.Email}");
+                Console.WriteLine($"Passwort: {data.Password}");
 
+                HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("api/authenticate/register", data);
+
+                string content = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // ✅ Erfolg - Response-Objekt zurückgeben
+                    var result = JsonSerializer.Deserialize<Response>(content, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                    Console.WriteLine("✅ Registrierung erfolgreich!");
+                    return result!;
+                }
+                else
+                {
+                    Console.WriteLine("❌ Registrierung fehlgeschlagen!");
+                    Console.WriteLine($"Status Code: {response.StatusCode}");
+                    Console.WriteLine($"Reason: {response.ReasonPhrase}");
+                    Console.WriteLine($"Details: {content}");
+
+                    // Fehler-Response zurückgeben
+                    return new Response
+                    {
+                        Status = "Error",
+                        Message = $"Registration failed: {content}"
+                    };
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine("❌ Fehler bei der HTTP-Anfrage:");
+                Console.WriteLine(ex.Message);
+
+                return new Response
+                {
+                    Status = "Error",
+                    Message = $"HTTP error: {ex.Message}"
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("❌ Ein unerwarteter Fehler ist aufgetreten:");
+                Console.WriteLine(ex.Message);
+
+                return new Response
+                {
+                    Status = "Error",
+                    Message = $"Unexpected error: {ex.Message}"
+                };
+            }
         }
 
 

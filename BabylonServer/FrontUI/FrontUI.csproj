@@ -61,7 +61,6 @@
     <PackageReference Include="MudBlazor.ThemeManager" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="FrontPages\AuthPages\" />
     <Folder Include="wwwroot\css\NewFolder\" />
   </ItemGroup>
 

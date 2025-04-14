@@ -158,6 +158,22 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
+app.Use(async (context, next) =>
+{
+    try
+    {
+        Console.WriteLine($"[Middleware] Request: {context.Request.Method} {context.Request.Path}");
 
+        await next.Invoke();
+
+        Console.WriteLine($"[Middleware] Response: {context.Response.StatusCode}");
+    }
+    catch (IOException ex)
+    {
+        Console.WriteLine($"IOException caught: {ex.Message}");
+        // Weitere Fehlerbehandlung, wenn nötig
+        throw;
+    }
+});
 
 app.Run();

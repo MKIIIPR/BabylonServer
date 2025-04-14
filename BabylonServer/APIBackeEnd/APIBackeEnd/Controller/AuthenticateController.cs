@@ -90,8 +90,9 @@ namespace APIBID.Controllers.UserController
 
             [HttpPost]
             [Route("register")]
-            public async Task<IActionResult> Register(RegisterModel model)
-            {
+        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+
+        {
             try
             {
                 var userExists = await _userManager.FindByNameAsync(model.UserName);
