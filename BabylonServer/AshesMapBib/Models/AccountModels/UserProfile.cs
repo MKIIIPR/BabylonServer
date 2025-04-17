@@ -23,8 +23,5 @@ namespace AshesMapBib.Models.AccountModels
         public string? ServerId { get; set; } //VerknüpfterServer
         public bool? IsMainProfile{ get; set; }
 
-
-
-
     }
 }

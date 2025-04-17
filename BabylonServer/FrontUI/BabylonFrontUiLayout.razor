@@ -22,27 +22,40 @@
                 <MudImage Src="_content/FrontUI/img/beeetv.png" Width="55" Height="55" Alt="Mony the dog" Elevation="25" Class="rounded-lg" Style="border-radius:30px!important" />
                 BabylonMap 
                 <MudSpacer  />
+
+                <MudSpacer></MudSpacer>
                 <AuthorizeView>
                     <Authorized>
-                        @{
-                            var ds = "";
-                        }
-                        yes 
-                                
-                            </Authorized>
-                            <NotAuthorized>
-                        @{
-                            var ds = "";
-                        }
-                            </NotAuthorized>
-            </AuthorizeView>
-                <MudSpacer></MudSpacer>
-                <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Primary" aria-label="github" OnClick="RegisterInSideNav" />
+                        
+                            <p>Hallo, @context.User.Identity.Name!</p>
+                        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Primary" aria-label="github" OnClick="UserSideBar" />
+                        
+                    </Authorized>
+                    <NotAuthorized>
+                        <p>Hallo, @context.User.Identity.Name!</p>
+                        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Primary" aria-label="github" OnClick="RegisterInSideNav" />
+                    </NotAuthorized>
+                </AuthorizeView>
+
+              
                 <MudButton OnClick="@(() => OpenDialogAsync())" Color="Color.Tertiary">Disable backdrop dialog</MudButton>
             </MudAppBar>
 
             <MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Never" Anchor="Anchor.End" Width="400px" Elevation="1" Variant="@DrawerVariant.Temporary">
-               <FrontUI.FrontPages.AuthPages.VerifyAuth/>
+                @switch (SideNavContent)
+                {
+                case "Register":
+                        <FrontUI.FrontPages.AuthPages.Register />
+                    break;
+                case "user":
+                        <FrontUI.FrontPages.AuthPages.UserSideBar />
+                        break;
+                case "menue":
+                    
+                    break;
+                
+                    
+            }       
             </MudDrawer>
 
             <MudMainContent>
@@ -60,6 +73,7 @@
     {
         return Dialog.ShowAsync<DialogTemplate>("Custom Options Dialog", new DialogOptions() { BackdropClick = false });
     }
+
     @code {
         public string User { get; set; } = string.Empty;
         protected override async Task OnInitializedAsync()
@@ -85,6 +99,11 @@
         SideNavContent = "Register";
         DrawerToggle();
     }
+        public void UserSideBar()
+        {
+    SideNavContent = "user";
+    DrawerToggle();
+        }
     private void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
