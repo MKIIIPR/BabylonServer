@@ -15,10 +15,9 @@ namespace AshesMapBib.Models.GameRelatedModels
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
         public string GameId { get; set; }
-        public string FilePath { get;set; }
-        public string Type { get; set; }
+
         public string Icon { get; set; }
-        public string Description { get; set; }
+
         
         public List<ItemRootTree> Children { get; set; } = new List<ItemRootTree>();
         

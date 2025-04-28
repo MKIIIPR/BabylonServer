@@ -1,5 +1,6 @@
 ﻿
 @using FrontUI.AppStates
+@using FrontUI.Components
 @using FrontUI.FrontPages.Dialogs
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Routing
@@ -45,7 +46,7 @@
                 @switch (SideNavContent)
                 {
                 case "Register":
-                        <FrontUI.FrontPages.AuthPages.Register />
+                        <FrontUI.FrontPages.AuthPages.UserSideBar />
                     break;
                 case "user":
                         <FrontUI.FrontPages.AuthPages.UserSideBar />
@@ -57,7 +58,9 @@
                     
             }       
             </MudDrawer>
-
+            <MudDrawer @bind-Open="@(_navOpend)" ClipMode="DrawerClipMode.Docked" Anchor="Anchor.Start" Width="200px" Elevation="1" Variant="@DrawerVariant.Responsive">
+            <NavSideBar></NavSideBar>
+            </MudDrawer>
             <MudMainContent>
 
                 @ChildContent
@@ -73,8 +76,9 @@
     {
         return Dialog.ShowAsync<DialogTemplate>("Custom Options Dialog", new DialogOptions() { BackdropClick = false });
     }
-
-    @code {
+    public bool _navOpend = true;
+  
+    
         public string User { get; set; } = string.Empty;
         protected override async Task OnInitializedAsync()
         {
@@ -90,7 +94,7 @@
                 Console.WriteLine("Benutzer ist nicht authentifiziert.");
             }
         }
-    }
+    
     [Parameter] public RenderFragment ChildContent { get; set; }
     private bool _drawerOpen = false;
     public string SideNavContent = "";
@@ -106,7 +110,7 @@
         }
     private void DrawerToggle()
     {
-        _drawerOpen = !_drawerOpen;
+        _navOpend = !_navOpend;
     }
 
     private MudTheme _myDarkTheme = new MudTheme()

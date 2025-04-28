@@ -8,9 +8,10 @@ namespace AshesMapBib.Models.GameRelatedModels
 {
     public class ItemRarity
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Id { get; set; } 
+        public string GameId { get; set; }
         public string Name { get; set; }
-        public string? Color { get;set; }
+        public string? Color { get; set; }
         public string? RarityIcon { get; set; }
     }
 }

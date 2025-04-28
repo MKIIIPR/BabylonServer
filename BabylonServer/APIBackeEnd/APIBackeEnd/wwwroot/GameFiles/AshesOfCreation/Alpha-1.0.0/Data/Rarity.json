@@ -1,3 +1,1 @@
-﻿[
-
-]
+[{"Id":"aoc.common","GameId":"aoc","Name":"Common","Color":"#56d546","RarityIcon":null},{"Id":"aoc.uncommon","GameId":"aoc","Name":"Uncommon","Color":"#56d546","RarityIcon":null},{"Id":"aoc.rare","GameId":"aoc","Name":"Rare","Color":"#56d546","RarityIcon":null},{"Id":"aoc.heroic","GameId":"aoc","Name":"Heroic","Color":"#56d546","RarityIcon":null},{"Id":"aoc.epic","GameId":"aoc","Name":"Epic","Color":"#56d546","RarityIcon":null},{"Id":"aoc.legendary","GameId":"aoc","Name":"Legendary","Color":"#56d546","RarityIcon":null}]

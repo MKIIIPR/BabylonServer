@@ -20,7 +20,7 @@
 
     public AppState AppState { get; set; }
     public MapState MapState { get; set; }
-   
+
 
 
     bool hasLoaded;
@@ -29,7 +29,7 @@
     {
         var json = await LocalStorageService.GetItemAsStringAsync("AppStateJson");
         var jsonUser = await LocalStorageService.GetItemAsStringAsync("AppUserState");
-        var jsonServer = await LocalStorageService.GetItemAsStringAsync("AppServerState");
+        
         //Appdata injection
         #region App
         if (json != null && json != "")
@@ -48,6 +48,8 @@
         else
         {
             AppState = new AppState();
+            MapState = new MapState();
+            SaveChanges();
         }
         #endregion
         //Userdata injection

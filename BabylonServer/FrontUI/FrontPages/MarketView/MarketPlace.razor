@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNetCore.Components
+@using AshesMapBib.Models.GameRelatedModels.AshesOfCreation
+@using Services.MarketPlaceServcies
+
+@code {
+    // Achtung: nullable, weil es initial null ist
+    [CascadingParameter]
+    public MarketContext<AOCItem>? mContext { get; set; }
+
+    private string gameName = "Counter Strike Global Offensive";
+}
+
+@if (mContext is null)
+{
+    <!-- Lade-Placeholder, bis die Daten da sind -->
+    <p>Lade Marktdaten…</p>
+}
+else
+{
+    <h3>Marktplatz für @gameName</h3>
+
+    <MudContainer Class="mt-4 px-4" MaxWidth="MaxWidth.False">
+        <MudGrid>
+            <MudItem xs="12" sm="4" md="3">
+                <MudPaper Elevation="4" Class="pa-4" Style="height:85.3vh;">
+                    <SearchBox />
+
+                    <!-- Auch hier guarden, falls ItemRoot selbst null sein könnte -->
+                    @if (mContext.ItemRoot != null)
+                    {
+                        <MarketNavTree NavTree="@mContext.ItemRoot" />
+                    }
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="12" sm="8" md="9">
+                <MudPaper Elevation="4" Class="pa-4" Style="height:85.3vh;">
+                    <ul>
+                        @* Guard gegen eine leere oder null-Liste *@
+                        @if (mContext.Listing != null && mContext.Listing.Any())
+                        {
+                            @foreach (var kv in mContext.Listing)
+                            {
+                                <li>@kv.Value</li>
+                            }
+                        }
+                        else
+                        {
+                            <li>Keine Items gefunden.</li>
+                        }
+                    </ul>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+}

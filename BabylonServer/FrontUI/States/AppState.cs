@@ -19,7 +19,8 @@ namespace FrontPWA.Shared.AppState.VarState
         public int TimeToLiveInSeconds { get; set; } = 3600;
         [JsonProperty]
         public DateTime LastAccessed { get; set; } = DateTime.Now;
-
+        [JsonProperty]
+        public string GameID { get; set; } = "AOC";
         //[JsonProperty]
         //public List<ComServerView> ConnectedServer = new List<ComServerView>();
 
@@ -34,6 +35,11 @@ namespace FrontPWA.Shared.AppState.VarState
         {
             this.Message = Message;
             NotifyStateChanged(Source, "Message");
+        }
+        public void UpdateGameId(ComponentBase Source, string gameid)
+        {
+            this.GameID = gameid;
+            NotifyStateChanged(Source, "gameid");
         }
 
         public void UpdateEnabled(ComponentBase Source, bool Enabled)

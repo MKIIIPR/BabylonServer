@@ -10,7 +10,7 @@ namespace APIBackeEnd.Games.AshesOfCreation
     {
         public AOCGameSettings _settings { get; set; }
         public AOCGameDataServices _gdservice { get; set; }
-        public List<AOC_Item> AOCItems { get; set; } = new List<AOC_Item>();
+        public List<AOC_Item_Json> AOCItems { get; set; } = new List<AOC_Item_Json>();
         public List<ItemRootTree> ItemRootTrees { get; set; } = new List<ItemRootTree>();
         public List<ItemRarity> ItemRarities { get; set; } = new List<ItemRarity>();
         public AshesAssembly(AOCGameSettings settings, IAOCGameFileFactory _fac, AOCGameDataServices gdservice )
@@ -24,7 +24,7 @@ namespace APIBackeEnd.Games.AshesOfCreation
         {
            
             // Load the items
-            AOCItems = LoadGenericListAsync<AOC_Item>(settings.InGameItemsFilePath).Result;
+            AOCItems = LoadGenericListAsync<AOC_Item_Json>(settings.InGameItemsFilePath).Result;
         }
         public async Task<List<T>> LoadGenericListAsync<T>(string filePath)
         {

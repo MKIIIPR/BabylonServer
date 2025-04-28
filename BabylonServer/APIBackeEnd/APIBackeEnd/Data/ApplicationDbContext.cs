@@ -1,7 +1,9 @@
-using AshesMapBib.Models.AccountModels;
+ï»¿using AshesMapBib.Models.AccountModels;
 using AshesMapBib.Models.AccountModels.ClientModel;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using AshesMapBib.Models.GameRelatedModels.AshesOfCreation;
+using AshesMapBib.Models;
 
 namespace APIBackeEnd.Data
 {
@@ -13,7 +15,10 @@ namespace APIBackeEnd.Data
         }
         public DbSet<BabylonClient> BabylonClient { get; set; }
         public DbSet<AppUser> AppUser { get; set; }
-        // Optional: Falls du zusätzliche DbSets für andere Modelle hinzufügen möchtest
+        public DbSet<AOCItem> AOC_Item { get; set; } 
+        public DbSet<MarketItem> MarketItems { get; set; } 
+
+        // Optional: Falls du zusï¿½tzliche DbSets fï¿½r andere Modelle hinzufï¿½gen mï¿½chtest
         // public DbSet<SomeModel> SomeModels { get; set; }
     }
 }

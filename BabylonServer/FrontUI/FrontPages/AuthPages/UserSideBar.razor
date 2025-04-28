@@ -1,4 +1,6 @@
-﻿@page "/sidebar"
+﻿
+@using AshesMapBib.Models.GameRelatedModels
+@using AshesMapBib.Models.GameRelatedModels.AshesOfCreation
 @using MudBlazor
 @using System.Text.Json
 
@@ -7,9 +9,10 @@
         <MudText Typo="Typo.h6" Class="px-4 mb-2">Items</MudText>
         @if (NavTree.Children.Any())
         {
+            @NavTree.Children.Count()
             foreach (var node in NavTree.Children)
             {
-                @RenderNavNode(node)
+               <FrontUI.Components.NavNodeView Node="node"></FrontUI.Components.NavNodeView>
             }
         }
         else
@@ -20,22 +23,9 @@
 </MudPaper>
 
 @code {
-    public class Item
-    {
-        public string itemName { get; set; } = "";
-        public string itemNameUID { get; set; } = "";
-        public string displayIcon { get; set; } = "";
-    }
 
-    public class NavNode
-    {
-        public string Name { get; set; } = "";
-        public List<NavNode> Children { get; set; } = new();
-        public Item? Item { get; set; } = null;
-    }
-
-    private List<Item> Items = new();
-    private NavNode NavTree { get; set; } = new();
+    private List<AOC_Item_Json> Items = new();
+    private ItemRootTree NavTree { get; set; } = new();
 
     protected override void OnInitialized()
     {
@@ -20864,7 +20854,7 @@
                     var fullJson = cleanitemString + "}";
                     // Console.WriteLine(fullJson);
                     // Deserialisiere das vollständige JSON-Objekt in ein Item
-                    var item = JsonSerializer.Deserialize<Item>(fullJson);
+                    var item = JsonSerializer.Deserialize<AOC_Item_Json>(fullJson);
                     if (item != null)
                     {
                         Items.Add(item);
@@ -20883,92 +20873,43 @@
         }
 
         // Navigationsbaum erstellen
-        NavTree = BuildNavTree(Items);
+        NavTree = BuildNavTreeFromItems(Items);
         // Console.WriteLine($"[DEBUG] Root has {NavTree.Children.Count} children.");
 
     }
-
-
-    private NavNode BuildNavTree(List<Item> items)
+    private ItemRootTree BuildNavTreeFromItems(List<AOC_Item_Json> items)
     {
-        var root = new NavNode { Name = "Root" };
+        var root = new ItemRootTree { Name = "Root" };
 
         foreach (var item in items)
         {
-            if (string.IsNullOrWhiteSpace(item.itemNameUID))
-            {
-                Console.WriteLine($"[WARN] Empty UID for item: {item.itemName}");
-                continue;
-            }
-            
-            // Zeige die UID vor der Verarbeitung
-            // Console.WriteLine($"[DEBUG] Processing Item: {item.itemName} | UID: {item.itemNameUID}");
+            if (string.IsNullOrWhiteSpace(item.Icon)) continue;
 
-            var parts = item.itemNameUID.Split('_', StringSplitOptions.RemoveEmptyEntries);
+            // Splitte den DisplayIcon-Pfad in Teile
+            var pathParts = item.Id
+                .Split('_', StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            if (parts.Length == 0)
-            {
-                Console.WriteLine($"[WARN] Empty UID for item: {item.itemName}");
-                continue;
-            }
+            if (!pathParts.Any()) continue;
 
             var current = root;
 
-            for (int i = 0; i < parts.Length; i++)
+            foreach (var part in pathParts)
             {
-                var part = parts[i];
-                // Console.WriteLine($"[DEBUG] Processing part: {part}");
-
                 var child = current.Children.FirstOrDefault(c => c.Name == part);
-
                 if (child == null)
                 {
-                    child = new NavNode { Name = part };
+                    child = new ItemRootTree { Name = part };
                     current.Children.Add(child);
-                    // Console.WriteLine($"[DEBUG] Created new node: {part}");
                 }
-
                 current = child;
-
-                if (i == parts.Length - 1)
-                {
-                    current.Item = item;
-                    // Console.WriteLine($"[DEBUG] Assigned item to node: {part}");
-                }
             }
         }
 
         return root;
     }
 
+  
 
-    private RenderFragment RenderNavNode(NavNode node) => builder =>
-    {
-        int seq = 0;
-        // Console.WriteLine($"[DEBUG] Rendering node: '{node.Name}' | HasItem: {node.Item != null} | ChildCount: {node.Children.Count}");
 
-        if (node.Children.Any())
-        {
-            builder.OpenComponent<MudNavGroup>(seq++);
-            builder.AddAttribute(seq++, "Title", node.Name);
-            builder.AddAttribute(seq++, "ChildContent", (RenderFragment)(childBuilder =>
-            {
-                foreach (var child in node.Children.OrderBy(c => c.Name))
-                {
-                    RenderNavNode(child)(childBuilder);
-                }
-            }));
-            builder.CloseComponent();
-        }
-        else if (node.Item != null)
-        {
-            builder.OpenComponent<MudNavLink>(seq++);
-            builder.AddAttribute(seq++, "Href", $"/item/{node.Item.itemNameUID}");
-            builder.AddAttribute(seq++, "ChildContent", (RenderFragment)(childBuilder =>
-            {
-                childBuilder.AddContent(seq++, node.Item.itemName);
-            }));
-            builder.CloseComponent();
-        }
-    };
+ 
 }

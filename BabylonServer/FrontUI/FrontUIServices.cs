@@ -31,8 +31,9 @@ namespace FrontUI
         public static void ADDFrontUIServices(this IServiceCollection services)
         {
             // Umgebung bestimmen (hier auch anpassbar)
-        
+
             // Weitere Services
+            services.ADDBabylonServices();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
             services.AddAuthorizationCore();

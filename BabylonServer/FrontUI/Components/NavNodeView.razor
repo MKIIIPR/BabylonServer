@@ -1,0 +1,29 @@
+﻿@using AshesMapBib.Models.GameRelatedModels
+@using static FrontUI.FrontPages.AuthPages.UserSideBar
+@if (Node.Children.Any())
+{
+    <MudNavGroup Title="@Node.Name" ExpandedChanged="IsExpandedChanged">
+        @if (IsExpanded)
+        {
+            @foreach (var child in Node.Children.OrderBy(c => c.Name))
+            {
+                <NavNodeView Node="child" />
+            }
+        }
+    </MudNavGroup>
+}
+else
+{
+    <MudNavLink Href="/AOCMarket" Title="@Node.Name">
+        @Node.Name
+    </MudNavLink>
+}
+@code {
+    [Parameter] public ItemRootTree Node { get; set; } = default!;
+    public bool IsExpanded { get; set; } = false;
+    private Task IsExpandedChanged()
+    {
+        IsExpanded = !IsExpanded;
+        return Task.FromResult(IsExpanded);
+    }
+}

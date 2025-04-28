@@ -1,0 +1,39 @@
+﻿
+@using AshesMapBib.Models.GameRelatedModels
+@using AshesMapBib.Models.GameRelatedModels.AshesOfCreation
+@using MudBlazor
+@using System.Text.Json
+
+<MudPaper Width="280px" Class="py-3" Elevation="2">
+    <MudNavMenu Dense="true">
+        <MudText Typo="Typo.h6" Class="px-4 mb-2">Items</MudText>
+        @if (NavTree.Children.Any())
+        {
+            @NavTree.Children.Count()
+            foreach (var node in NavTree.Children)
+            {
+                <FrontUI.Components.NavNodeView Node="node"></FrontUI.Components.NavNodeView>
+            }
+        }
+        else
+        {
+            <MudText Class="px-4">Keine Items gefunden.</MudText>
+        }
+    </MudNavMenu>
+</MudPaper>
+
+@code {
+
+    
+    [Parameter]public  ItemRootTree NavTree { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        
+
+    }
+   
+
+
+
+}

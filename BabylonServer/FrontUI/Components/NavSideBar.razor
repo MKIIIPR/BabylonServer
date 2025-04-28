@@ -1,0 +1,19 @@
+﻿@using FrontUI.AppStates
+
+@switch (_app?.AppState.GameID)
+    {
+        case "AOC":
+            // Logik für Ashes of Creation
+        <AOCNavbar></AOCNavbar>
+            break;
+
+        case "SC":
+            // Logik für Pantheon
+        <h1>Star Citizen ausgewählt!</h1>
+            break;
+
+    }
+
+@code {
+    [CascadingParameter] public CascadingAppStateProvider? _app { get; set; }
+}

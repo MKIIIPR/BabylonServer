@@ -8,12 +8,12 @@ namespace APIBackeEnd.Games.AshesOfCreation.Services
     public class AOCGameDataServices
     {
         public AOCGameSettings _settings { get; set; }
-        public AOCGameFileFactory _fileFactory { get; set; }
-        public AOCGameDataServices(AOCGameSettings settings, AOCGameFileFactory fileFactory)
+        public AOCGameFileFactory _factory { get; set; } 
+        public AOCGameDataServices(AOCGameSettings settings)
         {
-            _fileFactory = fileFactory;
+            
             _settings = settings;
-            _fileFactory.SetGameSettings(settings);
+            _factory.SetGameSettings(settings);
         }
         public async Task<ItemRootTree> LoadItemRootTreeAsync()
         {
@@ -36,7 +36,7 @@ namespace APIBackeEnd.Games.AshesOfCreation.Services
                 else
                 {
                     // Asynchroner Aufruf der Erstellungsmethode
-                    await _fileFactory.CreateItemRootTreeAsync();
+                    await _factory.CreateItemRootTreeAsync();
 
                     throw new FileNotFoundException(
                         $"Item root file not found at {itemRootPath}. A creation attempt was made.");
@@ -62,13 +62,13 @@ namespace APIBackeEnd.Games.AshesOfCreation.Services
                 throw new FileNotFoundException($"Rarity file not found at {rarityPath}");
             }
         }
-        public async Task<List<AOC_Item>> LoadInGameItemsAsync()
+        public async Task<List<AOC_Item_Json>> LoadInGameItemsAsync()
         {
             var inGameItemsPath = Path.Combine("wwwroot", _settings.InGameItemsFilePath);
             if (File.Exists(inGameItemsPath))
             {
                 var inGameItemsJson = await File.ReadAllTextAsync(inGameItemsPath);
-                var inGameItems = JsonSerializer.Deserialize<List<AOC_Item>>(inGameItemsJson);
+                var inGameItems = JsonSerializer.Deserialize<List<AOC_Item_Json>>(inGameItemsJson);
                 return inGameItems;
             }
             else

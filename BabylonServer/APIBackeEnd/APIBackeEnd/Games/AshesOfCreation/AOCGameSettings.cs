@@ -9,29 +9,21 @@ namespace APIBackeEnd.Games.AshesOfCreation
         // Constants for file paths and names
         // These paths are relative to the game's data directory wwwroot/GameFiles/AshesOfCreation/{version}/
         public string GameName = "AshesOfCreation";
-        public string GameVersion = "Alpha-1.0.0";
-        public string ItemRootFilePath => $"GameFiles/AshesOfCreation/{GameVersion}/Data/ItemRoot.json";
-        public string InGameItemsFilePath => $"GameFiles/AshesOfCreation/{GameVersion}/Data/Rarity.json";
-        public string RarityFilePath => $"GameFiles/AshesOfCreation/{GameVersion}/Data/Rarity.json";
+        public string BuildVersion = "Alpha-1.0.0";
+        public string ItemRootFilePath => $"wwwroot/GameFiles/AshesOfCreation/{BuildVersion}/Data/ItemRoot.json";
+        public string InGameItemsFilePath => $"wwwroot/GameFiles/AshesOfCreation/{BuildVersion}/Data/Items.json";
+        public string RarityFilePath => $"wwwroot/GameFiles/AshesOfCreation/{BuildVersion}/Data/Rarity.json";
+        public string SRCPath => $"wwwroot/GameFiles/AshesOfCreation/{BuildVersion}/src";
 
-        public AOCGameSettings()
-        {           
-        }
-        //load itemrootfilepath from the file 
-        public async Task<ItemRootTree> LoadItemRootTreeAsync()
+
+        public AOCGameSettings(string gameVersion)
         {
-            var itemRootPath = Path.Combine("wwwroot", ItemRootFilePath);
-            if (File.Exists(itemRootPath))
-            {
-                var itemRootJson = await File.ReadAllTextAsync(itemRootPath);
-                var itemRoot = JsonSerializer.Deserialize<ItemRootTree>(itemRootJson);
-                return itemRoot;
-            }
-            else
-            {
-                throw new FileNotFoundException($"Item root file not found at {itemRootPath}");
-            }
+            BuildVersion = gameVersion;
+            
         }
+        // Create all necessary subfolders: Data and SRC
+       
+        
         //load generic T from File for example Rarity, ItemRootTree
         
     }

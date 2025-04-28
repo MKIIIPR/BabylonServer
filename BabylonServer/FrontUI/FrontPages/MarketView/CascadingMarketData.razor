@@ -1,0 +1,35 @@
+﻿@using AshesMapBib.Models
+@using Services.MarketPlaceServcies
+@typeparam T where T : AshesMapBib.Models.GameRelatedModels.AshesOfCreation.IGameItem
+@inject InGameItemContext<T> _igContext;
+@inject IMarketService MarketService
+
+<CascadingValue Value="Market">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter] public string GameId { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    public MarketContext<T> Market { get; set; }
+
+    private string GetItemId(MarketItem item)
+    {
+        // Kann man generisch machen, z.B. über Interface mit Id-Eigenschaft:
+        var prop = typeof(T).GetProperty("Id");
+        return prop?.GetValue(item)?.ToString() ?? Guid.NewGuid().ToString();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // 1. Lade die Items aus dem InGameItemContext
+        await _igContext.EnsureCompleteLoaded();    // Lade Primäritems
+
+        // 2. Initialisiere den MarketContext mit den geladenen Daten
+        Market = new MarketContext<T>(_igContext);
+
+        // 3. Fülle die Marktitems aus den geladenen InGameItems (kannst du später noch weiter ausbauen)
+        
+    }
+}
