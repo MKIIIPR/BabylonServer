@@ -238,3 +238,45 @@ window.addCustomMarker = addCustomMarker;
 window.removeMarker = removeMarker;
 window.removeCustomMarkers = removeCustomMarkers;
 window.CenterOnMap = CenterOnMap;
+
+
+window.initResizableSplit = () => {
+    const top = document.getElementById("top-pane");
+    const bottom = document.getElementById("bottom-pane");
+    const container = document.querySelector(".split-container");
+
+    // Der feste Bereich zwischen Top und Bottom (MudPaper mit Sell Order)
+    const middleFixed = container.children[1]; // Annahme: mittlerer MudPaper ist an zweiter Stelle
+
+    let isDragging = false;
+
+    // Wir setzen das Event nicht auf .resizable-divider, sondern auf den gesamten middleFixed Paper
+    middleFixed.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        document.body.style.cursor = "row-resize";
+        e.preventDefault();
+    });
+
+    document.addEventListener("mouseup", () => {
+        isDragging = false;
+        document.body.style.cursor = "default";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+
+        const containerRect = container.getBoundingClientRect();
+        const fixedHeight = middleFixed.getBoundingClientRect().height;
+        const offsetY = e.clientY - containerRect.top;
+        const containerHeight = containerRect.height;
+
+        // Prozentuale Höhe des oberen Bereichs (ohne den festen Mittelbereich)
+        const usableHeight = containerHeight - fixedHeight;
+        const topPercent = Math.max(10, Math.min(90, (offsetY / usableHeight) * 100));
+        const bottomPercent = 100 - topPercent;
+
+        top.style.height = `${topPercent}%`;
+        bottom.style.height = `${bottomPercent}%`;
+    });
+};
+

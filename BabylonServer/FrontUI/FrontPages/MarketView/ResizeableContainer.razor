@@ -1,0 +1,53 @@
+﻿<MudPaper Class="split-container" Style="@Style">
+    <div id="top-pane" class="pane" style="height: 45%;">
+        <MudPaper Class="" Style="height: 100%; width: 100%;" Square="true">
+            @Top
+        </MudPaper>
+    </div>
+    <MudPaper Style="height:10%;display:flex; flex-direction:column" Class="">
+        <div style="height:100%;">
+            <MudDivider Class="top-pane" />
+            @Middle
+            <MudDivider Class="bottom-pane" />
+        </div>
+        
+    </MudPaper>
+    
+
+    <div id="bottom-pane" class="pane" style="height:45%;">
+        <MudPaper Class="" Style="height: 100%; width: 100%;" Square="true">
+            @Bottom
+        </MudPaper>
+    </div>
+</MudPaper>
+<style>
+    .split-container {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .resizable-divider {
+        height: 5px;
+        cursor: row-resize;
+        background-color: #ccc;
+        z-index: 10;
+    }
+</style>
+@code {
+    [Parameter] public RenderFragment Top { get; set; }
+    [Parameter] public RenderFragment Bottom { get; set; }
+    [Parameter] public RenderFragment Middle { get; set; }
+    [Parameter] public string Style { get; set; }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initResizableSplit");
+        }
+    }
+
+    [Inject]
+    public IJSRuntime JSRuntime { get; set; }
+}

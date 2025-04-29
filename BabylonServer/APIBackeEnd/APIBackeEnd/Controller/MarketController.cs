@@ -50,7 +50,7 @@ namespace ApiServer.Controllers.ComunityController
             var rarityId = "aoc.common";
             var serverId = "example-server"; // ggf. anpassen!
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 150; i++)
             {
                 var isBuyOrder = i % 2 == 0; // abwechselnd buy/sell
 

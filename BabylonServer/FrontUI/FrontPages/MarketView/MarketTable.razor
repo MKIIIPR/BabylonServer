@@ -4,7 +4,7 @@
 
 @inject IAPIHelper _api
 
-<MudTable Style="flex:1;" Items="@OrderList" Dense="true" Hover="true" Bordered="false" Striped="true" Filter="new Func<MarketItem, bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1">
+<MudTable Style="flex:1;height:inherit" FixedHeader="true" Items="@OrderList" Dense="true" Hover="true" Bordered="false" Striped="true" Filter="new Func<MarketItem, bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1">
 
     <HeaderContent>
         <MudTh>Order</MudTh>        
@@ -21,13 +21,7 @@
 
 </MudTable>
 
-<div class="d-flex flex-wrap mt-4">
 
-    <MudSpacer />
-    <div style="min-width:200px;">
-        <MudText Class="align-self-center d-inline">Selected1: @selectedItem1?.Name</MudText>
-    </div>
-</div>
 
 @code {
 

@@ -1,7 +1,11 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
-
+.split-container .mud-table-container,
+.split-container .mud-table-container > div,
+.split-container .mud-table-container table {
+    height: 100%;
+}
 h1:focus {
     outline: none;
 }

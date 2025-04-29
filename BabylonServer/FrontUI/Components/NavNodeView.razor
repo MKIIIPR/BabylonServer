@@ -8,7 +8,9 @@
         {
             @foreach (var child in Node.Children.OrderBy(c => c.Name))
             {
-                <NavNodeView Node="child" OnItemSelected="OnItemSelected" />
+                <NavNodeView Node="child" OnItemSelected="OnItemSelected" >
+                    
+                </NavNodeView>
             }
         }
     </MudNavGroup>
@@ -16,7 +18,11 @@
 else
 {
     <MudNavLink OnClick="@(() => OnItemSelected.InvokeAsync(Node.Id))">
-        @Node.Name
+        <div style="display:flex">
+            @Node.Name
+            <MudRating SelectedValue="0" MaxValue="1" FullIcon="@Icons.Material.Filled.Visibility" EmptyIcon="@Icons.Material.Filled.VisibilityOff" />
+        </div>
+        
     </MudNavLink>
 }
 

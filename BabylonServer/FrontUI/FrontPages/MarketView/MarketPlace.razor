@@ -26,9 +26,8 @@ else
     <MudContainer Class="mt-4 px-4" MaxWidth="MaxWidth.False">
         <MudGrid>
             <MudItem xs="12" sm="4" md="3">
-                <MudPaper Elevation="4" Class="pa-4" Style="height:85.3vh;">
-                    <SearchBox />
-
+                <MudPaper Elevation="4" Class="pa-4" Style="height:85.3vh;overflow:hidden">
+                   
                     <!-- Auch hier guarden, falls ItemRoot selbst null sein könnte -->
                     @if (mContext.ItemRoot != null)
                     {
@@ -38,10 +37,18 @@ else
             </MudItem>
 
             <MudItem xs="12" sm="8" md="9">
-                <MudPaper Elevation="8" Class="pa-4" Style="height: 85.3vh; display: flex; flex-direction: column;" >
-                   <MarketTable OrderList="@(Market.OrderList.Where(order => order.OrderType.Contains("buy")).ToList())"></MarketTable>
-                    <MarketTable OrderList="@(Market.OrderList.Where(order => order.OrderType.Contains("sell")).ToList())"></MarketTable>
-                </MudPaper>
+
+                <ResizeableContainer  Style="height: 85.3vh; display: flex; flex-direction: column;">
+                    <Top>
+                        <MarketTable OrderList="@(Market.OrderList.Where(order => order.OrderType.Contains("buy")).ToList())"></MarketTable>
+                    </Top>
+                    <Middle>
+                        <h3 style="height:50px">Sell Order</h3>
+                    </Middle>
+                    <Bottom>
+                        <MarketTable OrderList="@(Market.OrderList.Where(order => order.OrderType.Contains("sell")).ToList())"></MarketTable>
+                    </Bottom>
+                </ResizeableContainer>
             </MudItem>
         </MudGrid>
     </MudContainer>
