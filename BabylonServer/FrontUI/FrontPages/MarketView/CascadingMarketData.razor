@@ -1,35 +1,61 @@
 ﻿@using AshesMapBib.Models
 @using Services.MarketPlaceServcies
 @typeparam T where T : AshesMapBib.Models.GameRelatedModels.AshesOfCreation.IGameItem
-@inject InGameItemContext<T> _igContext;
-@inject IMarketService MarketService
 
-<CascadingValue Value="Market">
-    @ChildContent
-</CascadingValue>
+@inject InGameItemContext<T> _igContext
+@inject IMarketService _marketService
+
+@if (Market is null)
+{
+    <p>Lade Marktdaten…</p>
+}
+else
+{
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+}
 
 @code {
-    [Parameter] public string GameId { get; set; }
+    [Parameter] public string GameId { get; set; } = "AOCItem";
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    public MarketContext<T> Market { get; set; }
-
-    private string GetItemId(MarketItem item)
-    {
-        // Kann man generisch machen, z.B. über Interface mit Id-Eigenschaft:
-        var prop = typeof(T).GetProperty("Id");
-        return prop?.GetValue(item)?.ToString() ?? Guid.NewGuid().ToString();
-    }
+    public string ItemSearchId { get; set; } = "Gear_Armor_Heavy_2ndSwordDivision_Feet";
+    public List<MarketItem> OrderList { get; set; } = new();
+    public MarketContext<T>? Market { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        // 1. Lade die Items aus dem InGameItemContext
-        await _igContext.EnsureCompleteLoaded();    // Lade Primäritems
+        Console.WriteLine("[CascadingMarketData] Initializing…");
 
-        // 2. Initialisiere den MarketContext mit den geladenen Daten
+        // Sicherstellen, dass DI funktioniert
+        Console.WriteLine($"[CascadingMarketData] _igContext null? {_igContext == null}");
+        Console.WriteLine($"[CascadingMarketData] _marketService null? {_marketService == null}");
+
+        await _igContext.EnsureCompleteLoaded();
         Market = new MarketContext<T>(_igContext);
+        await LoadInitialMarketData();
+    }
 
-        // 3. Fülle die Marktitems aus den geladenen InGameItems (kannst du später noch weiter ausbauen)
-        
+    private async Task LoadInitialMarketData()
+    {
+        if (!string.IsNullOrWhiteSpace(ItemSearchId))
+        {
+            OrderList = await _marketService.GetItemsForGameAsync(typeof(T).Name, ItemSearchId);
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    public async Task SetMarketItem(string itemId)
+    {
+        Console.WriteLine($"[CascadingMarketData] SetMarketItem invoked with: {itemId}");
+        ItemSearchId = itemId;
+
+        // Sicherstellen, dass Services noch gültig sind
+        Console.WriteLine($"[CascadingMarketData] _igContext null? {_igContext == null}");
+        Console.WriteLine($"[CascadingMarketData] _marketService null? {_marketService == null}");
+
+        OrderList = await _marketService.GetItemsForGameAsync(typeof(T).Name, itemId);
+        await InvokeAsync(StateHasChanged);
     }
 }

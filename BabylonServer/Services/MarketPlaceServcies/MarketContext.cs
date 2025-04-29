@@ -15,6 +15,7 @@ namespace Services.MarketPlaceServcies
     {
         public string GameId { get; set; }
         public Dictionary<string, MarketItem> Listing { get; } = new(StringComparer.OrdinalIgnoreCase);
+        
         public ItemRootTree ItemRoot => _gameContext.ItemRoot;
         public Dictionary<string, ItemRarity> RarityList => _gameContext.RarityList;
         public Dictionary<string, T> PrimeList => _gameContext.PrimeList;

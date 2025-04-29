@@ -1,8 +1,10 @@
 ﻿
 @using AshesMapBib.Models.GameRelatedModels
 @using AshesMapBib.Models.GameRelatedModels.AshesOfCreation
+@using FrontUI.Components
 @using MudBlazor
 @using System.Text.Json
+@typeparam T where T : AshesMapBib.Models.GameRelatedModels.AshesOfCreation.IGameItem
 
 <MudPaper Width="280px" Class="py-3" Elevation="2">
     <MudNavMenu Dense="true">
@@ -12,7 +14,8 @@
             @NavTree.Children.Count()
             foreach (var node in NavTree.Children)
             {
-                <FrontUI.Components.NavNodeView Node="node"></FrontUI.Components.NavNodeView>
+                <NavNodeView Node="node" OnItemSelected="Market.SetMarketItem" />
+
             }
         }
         else
@@ -23,10 +26,12 @@
 </MudPaper>
 
 @code {
+    [CascadingParameter] public CascadingMarketData<T> Market { get; set; } = new();
 
-    
+
     [Parameter]public  ItemRootTree NavTree { get; set; } = new();
 
+   
     protected override void OnInitialized()
     {
         

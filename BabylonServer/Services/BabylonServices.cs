@@ -15,6 +15,8 @@ namespace Services
     {
         public static void ADDBabylonServices(this IServiceCollection services)
         {
+
+            services.AddSingleton(typeof(MarketContext<>));
             services.AddSingleton<IAPIHelper, APIHelper>();
             services.AddSingleton<InGameItemApiClient>();
             services.AddSingleton<IMarketService, MarketService>();

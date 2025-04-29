@@ -32,15 +32,16 @@ namespace ApiServer.Controllers.ComunityController
         }
         // GET: api/Comunities
         [HttpGet]
-        [Route("/api/Market/AOCItem")]
-        public async Task<ActionResult> InitNewBuild()
+        [Route("/api/Market/AOCItem/{itemid}")]
+        public async Task<ActionResult> InitNewBuild(string itemid)
         {
-            List<MarketItem> marketItems = SeedList();
-
+            List<MarketItem> marketItems = SeedList(itemid);
+            marketItems = marketItems.Where(e => e.TrueItemId == itemid).ToList();
 
             return Ok(marketItems);
         }
-        private List<MarketItem> SeedList()
+
+        private List<MarketItem> SeedList(string itemid)
         {
             var marketItems = new List<MarketItem>();
 
@@ -55,8 +56,8 @@ namespace ApiServer.Controllers.ComunityController
 
                 var marketItem = new MarketItem
                 {
-                    CreatorId = Guid.NewGuid().ToString(),
-                    Name = "2nd Sword Division's Boots",
+                    CreatorId = Guid.NewGuid().ToString(),                    
+                    Name = itemid,
                     GameId = itemId,
                     OrderType = isBuyOrder ? "buy" : "sell",
                     LastUpdated = DateTime.UtcNow,
@@ -64,7 +65,7 @@ namespace ApiServer.Controllers.ComunityController
                     IsTradable = true,
                     Value = random.Next(500, 1500), // zufälliger Preis zwischen 500 und 1500
                     ServerId = serverId,
-                    TrueItemId = itemId
+                    TrueItemId = itemid
                 };
 
                 marketItems.Add(marketItem);

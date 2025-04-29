@@ -1,11 +1,15 @@
-﻿@using Microsoft.AspNetCore.Components
+﻿@using AshesMapBib.Models
+@using Microsoft.AspNetCore.Components
 @using AshesMapBib.Models.GameRelatedModels.AshesOfCreation
 @using Services.MarketPlaceServcies
+@inject IMarketService _marketService
+@typeparam T where T : AshesMapBib.Models.GameRelatedModels.AshesOfCreation.IGameItem
+@inject MarketContext<T>? mContext
 
 @code {
     // Achtung: nullable, weil es initial null ist
-    [CascadingParameter]
-    public MarketContext<AOCItem>? mContext { get; set; }
+   
+   
 
     private string gameName = "Counter Strike Global Offensive";
 }
@@ -28,29 +32,26 @@ else
                     <!-- Auch hier guarden, falls ItemRoot selbst null sein könnte -->
                     @if (mContext.ItemRoot != null)
                     {
-                        <MarketNavTree NavTree="@mContext.ItemRoot" />
+                        <MarketNavTree T="T" NavTree="@mContext.ItemRoot" />
                     }
                 </MudPaper>
             </MudItem>
 
             <MudItem xs="12" sm="8" md="9">
-                <MudPaper Elevation="4" Class="pa-4" Style="height:85.3vh;">
-                    <ul>
-                        @* Guard gegen eine leere oder null-Liste *@
-                        @if (mContext.Listing != null && mContext.Listing.Any())
-                        {
-                            @foreach (var kv in mContext.Listing)
-                            {
-                                <li>@kv.Value</li>
-                            }
-                        }
-                        else
-                        {
-                            <li>Keine Items gefunden.</li>
-                        }
-                    </ul>
+                <MudPaper Elevation="8" Class="pa-4" Style="height: 85.3vh; display: flex; flex-direction: column;" >
+                   <MarketTable OrderList="@(Market.OrderList.Where(order => order.OrderType.Contains("buy")).ToList())"></MarketTable>
+                    <MarketTable OrderList="@(Market.OrderList.Where(order => order.OrderType.Contains("sell")).ToList())"></MarketTable>
                 </MudPaper>
             </MudItem>
         </MudGrid>
     </MudContainer>
+}
+@code{
+    [CascadingParameter] public CascadingMarketData<T> Market { get; set; } = new();
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+    }
+    
+
 }

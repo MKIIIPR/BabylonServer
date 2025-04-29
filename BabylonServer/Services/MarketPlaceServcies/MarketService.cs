@@ -11,7 +11,7 @@ namespace Services.MarketPlaceServcies
 {
     public interface IMarketService
     {
-        Task<List<MarketItem>> GetItemsForGameAsync(string gameId);
+        public Task<List<MarketItem>> GetItemsForGameAsync(string gameId, string gameItemId);
     }
 
     public class MarketService : IMarketService
@@ -23,10 +23,10 @@ namespace Services.MarketPlaceServcies
             _client = httpClient;
         }
 
-        public async Task<List<MarketItem>> GetItemsForGameAsync(string gameId)
+        public async Task<List<MarketItem>> GetItemsForGameAsync(string gameId, string gameItemId)
         {
             // Baue die URL abhängig von gameId und T
-            var response = await _client.ApiClient.GetFromJsonAsync<List<MarketItem>>($"api/market/{gameId}");
+            var response = await _client.ApiClient.GetFromJsonAsync<List<MarketItem>>($"api/market/{gameId}/{gameItemId}");
             return response ?? new List<MarketItem>();
         }
     }
